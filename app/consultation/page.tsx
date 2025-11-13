@@ -312,7 +312,7 @@ export default function ConsultationPage() {
                   Transfer Using UPI ID (GPay, Paytm, PhonePe, YONO SBI):
                 </p>
                 <div className="mb-4 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                  <p className="text-purple-700 dark:text-purple-300 font-bold text-lg text-center">astrok@sbi</p>
+                  <p className="text-purple-700 dark:text-purple-300 font-bold text-lg text-center">astrok@ptyes</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-1">
                     Copy this UPI ID for payment
                   </p>
@@ -343,6 +343,7 @@ export default function ConsultationPage() {
                       pmhoroscope@gmail.com
                     </a>
                   </p>
+                  <p>Contact : +91 978477424 </p>
                 </div>
               </div>
             </div>

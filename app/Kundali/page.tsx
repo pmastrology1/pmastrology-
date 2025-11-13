@@ -318,7 +318,7 @@ export default function KundaliReportPage() {
                 Pay via UPI (GPay, Paytm, PhonePe):
               </p>
               <div className="mb-4 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border">
-                <p className="text-purple-700 dark:text-purple-300 font-bold text-lg text-center">astrok@sbi</p>
+                <p className="text-purple-700 dark:text-purple-300 font-bold text-lg text-center">astrok@ptyes</p>
               </div>
               <p className="text-center mb-4 text-gray-700 dark:text-gray-300 font-medium">
                 Detailed Kundali Report:{" "}
@@ -339,6 +339,7 @@ export default function KundaliReportPage() {
                   pmhoroscope@gmail.com
                 </a>
               </p>
+              <p>Contact : +91 978477424 </p>
             </div>
                         {/* International Clients (PayPal) */}
             <div className="rounded-lg border border-purple-100 dark:border-purple-800 bg-white dark:bg-gray-900 p-6 shadow-md">
