@@ -343,7 +343,7 @@ export default function ConsultationPage() {
                       pmhoroscope@gmail.com
                     </a>
                   </p>
-                  <p>Contact : +91 978477424 </p>
+                  <p className="text-center">Contact / Whats app / UPI Number : +91 978477424 </p>
                 </div>
               </div>
             </div>

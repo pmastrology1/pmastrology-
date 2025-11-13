@@ -339,7 +339,7 @@ export default function KundaliReportPage() {
                   pmhoroscope@gmail.com
                 </a>
               </p>
-              <p>Contact : +91 978477424 </p>
+              <p className="text-center">contact / Whats app / UPI : +91 978477424 </p>
             </div>
                         {/* International Clients (PayPal) */}
             <div className="rounded-lg border border-purple-100 dark:border-purple-800 bg-white dark:bg-gray-900 p-6 shadow-md">
