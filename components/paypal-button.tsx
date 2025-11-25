@@ -19,6 +19,21 @@ export function PayPalButton({ amount, currency, showSpinner = true, onSuccess }
     setScriptLoaded(true)
   }, [])
 
+  // Read client ID from env – REQUIRED for both sandbox and live
+  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
+
+  if (!clientId) {
+    // Fail fast if env is not set, instead of silently using "test" / sandbox
+    if (typeof window !== "undefined") {
+      console.error("Missing NEXT_PUBLIC_PAYPAL_CLIENT_ID for PayPal JS SDK")
+    }
+    return (
+      <div className="py-4 text-center text-red-600">
+        Payment configuration error. Please try again later.
+      </div>
+    )
+  }
+
   const handleCreateOrder = (data: any, actions: any) => {
     return actions.order.create({
       purchase_units: [
@@ -47,10 +62,10 @@ export function PayPalButton({ amount, currency, showSpinner = true, onSuccess }
         onSuccess(details)
       }
 
-      // In a real application, you would:
-      // 1. Update your database
-      // 2. Send confirmation email
-      // 3. Redirect to a thank you page
+      // TODO: here you can:
+      // 1. Call your backend to store the order/payment
+      // 2. Trigger email confirmations
+      // 3. Navigate to a thank‑you page
     })
   }
 
@@ -70,7 +85,7 @@ export function PayPalButton({ amount, currency, showSpinner = true, onSuccess }
   return (
     <PayPalScriptProvider
       options={{
-        "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "test", // Replace with your actual client ID in production
+        "client-id": clientId,       // live or sandbox ID comes from env
         currency: currency,
         intent: "capture",
       }}
