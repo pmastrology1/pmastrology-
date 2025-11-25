@@ -8,16 +8,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { SocialMediaIcons } from "@/components/social-media-icons"
-import { PayPalButton } from "@/components/paypal-button"
 import { useToast } from "@/hooks/use-toast"
 import Image from "next/image"
 import { HeroBackground } from "@/components/hero-background"
 
 export default function KundaliReportPage() {
   const { toast } = useToast()
-  const [showPayPal, setShowPayPal] = useState(false)
-  const [selectedAmount, setSelectedAmount] = useState("4.00")
-  const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Form state
@@ -63,83 +59,74 @@ export default function KundaliReportPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  // Check if payment screenshot is uploaded
-  if (!paymentScreenshot) {
-    toast({
-      title: "Payment Screenshot Required",
-      description: "Please upload your payment screenshot to proceed.",
-      variant: "destructive",
-    })
-    return
-  }
-
-  setIsSubmitting(true)
-
-  try {
-    // Format birth date to DD-MM-YYYY
-    let formattedDate = formData.birthDate
-    if (formattedDate) {
-      const [year, month, day] = formattedDate.split("-")
-      formattedDate = `${day}-${month}-${year}`
-    }
-
-    const dataToSend = new FormData()
-    dataToSend.append("firstName", formData.firstName)
-    dataToSend.append("lastName", formData.lastName)
-    dataToSend.append("email", formData.email)
-    dataToSend.append("phone", formData.phone)
-    dataToSend.append("birthDate", formattedDate)
-    dataToSend.append("birthTime", formData.birthTime)
-    dataToSend.append("birthPlace", formData.birthPlace)
-    dataToSend.append("additionalNotes", formData.additionalNotes)
-    dataToSend.append("paymentScreenshot", paymentScreenshot)
-
-    const response = await fetch("/api/send-consultation-email", {
-      method: "POST",
-      body: dataToSend,
-    })
-
-    if (response.ok) {
+    // Check if payment screenshot is uploaded
+    if (!paymentScreenshot) {
       toast({
-        title: "Request Submitted Successfully!",
-        description: "Your Kundali report request has been sent. You’ll receive your report via email within 48 hours.",
+        title: "Payment Screenshot Required",
+        description: "Please upload your payment screenshot to proceed.",
+        variant: "destructive",
       })
-
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        birthDate: "",
-        birthTime: "",
-        birthPlace: "",
-        additionalNotes: "",
-      })
-      setPaymentScreenshot(null)
-    } else {
-      throw new Error("Failed to send email")
+      return
     }
-  } catch (error) {
-    toast({
-      title: "Error",
-      description: "Failed to submit request. Please try again or contact us directly.",
-      variant: "destructive",
-    })
-  } finally {
-    setIsSubmitting(false)
-  }
-}
 
-  const handlePaymentSuccess = (details: any) => {
-    toast({
-      title: "Kundali Booked!",
-      description:
-        "Your Kundali is booked , we will mail you them shortly.",
-    })
-  }
+    setIsSubmitting(true)
 
+    try {
+      // Format birth date to DD-MM-YYYY
+      let formattedDate = formData.birthDate
+      if (formattedDate) {
+        const [year, month, day] = formattedDate.split("-")
+        formattedDate = `${day}-${month}-${year}`
+      }
+
+      const dataToSend = new FormData()
+      dataToSend.append("firstName", formData.firstName)
+      dataToSend.append("lastName", formData.lastName)
+      dataToSend.append("email", formData.email)
+      dataToSend.append("phone", formData.phone)
+      dataToSend.append("birthDate", formattedDate)
+      dataToSend.append("birthTime", formData.birthTime)
+      dataToSend.append("birthPlace", formData.birthPlace)
+      dataToSend.append("additionalNotes", formData.additionalNotes)
+      dataToSend.append("paymentScreenshot", paymentScreenshot)
+
+      const response = await fetch("/api/send-consultation-email", {
+        method: "POST",
+        body: dataToSend,
+      })
+
+      if (response.ok) {
+        toast({
+          title: "Request Submitted Successfully!",
+          description: "Your Kundali report request has been sent. You’ll receive your report via email within 48 hours.",
+        })
+
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          birthDate: "",
+          birthTime: "",
+          birthPlace: "",
+          additionalNotes: "",
+        })
+        setPaymentScreenshot(null)
+      } else {
+        throw new Error("Failed to send email")
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit request. Please try again or contact us directly.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
@@ -254,19 +241,6 @@ export default function KundaliReportPage() {
                     </div>
                   </div>
 
-                  {/* <div className="space-y-2">
-                    <label htmlFor="additional-notes" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Additional Notes or Focus Areas
-                    </label>
-                    <Textarea
-                      id="additional-notes"
-                      value={formData.additionalNotes}
-                      onChange={handleInputChange}
-                      placeholder="Mention if you want focus on career, marriage, finance, health, etc."
-                      className="min-h-[120px]"
-                    />
-                  </div> */}
-
                   <div className="space-y-2">
                     <label htmlFor="payment-screenshot" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Payment Screenshot <span className="text-red-500">*</span>
@@ -309,8 +283,6 @@ export default function KundaliReportPage() {
           </p>
 
           <div className="mt-12 grid gap-12 md:grid-cols-2">
-
-
             {/* Indian Clients */}
             <div className="rounded-lg border border-purple-100 dark:border-purple-800 bg-white dark:bg-gray-900 p-6 shadow-md">
               <h2 className="mb-6 text-2xl font-bold text-purple-900 dark:text-purple-100">For Clients in India</h2>
@@ -341,42 +313,23 @@ export default function KundaliReportPage() {
               </p>
               <p className="text-center">contact / Whats app / UPI : +91 978477424 </p>
             </div>
-                        {/* International Clients (PayPal) */}
+
+            {/* International Clients (PayPal Link) */}
             <div className="rounded-lg border border-purple-100 dark:border-purple-800 bg-white dark:bg-gray-900 p-6 shadow-md">
               <h2 className="mb-6 text-2xl font-bold text-purple-900 dark:text-purple-100">
                 For International Clients
               </h2>
-              <div className="mb-6">
-                <p className="mb-4 text-lg font-medium text-gray-800 dark:text-gray-200">
-                  Secure Payment via PayPal
-                </p>
-                <div className="mb-4">
-                  <select
-                    className="w-full rounded-md border p-2 dark:bg-gray-800 dark:text-white"
-                    value={selectedAmount}
-                    onChange={(e) => setSelectedAmount(e.target.value)}
-                  >
-                    <option value="4.00">Detailed Kundali Report $4.00 USD</option>
-                  </select>
-                </div>
-
-                {!showPayPal ? (
-                  <Button
-                    className="w-full bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:from-purple-600 hover:to-purple-800 mb-4"
-                    onClick={() => setShowPayPal(true)}
-                  >
-                    Pay with PayPal
-                  </Button>
-                ) : (
-                  <div className="mb-4">
-                    <PayPalButton amount={selectedAmount} currency={selectedCurrency} onSuccess={handlePaymentSuccess} />
-                    <Button variant="outline" className="w-full mt-2" onClick={() => setShowPayPal(false)}>
-                      Cancel
-                    </Button>
-                  </div>
-                )}
-              </div>
-
+              <p className="mb-4 text-lg font-medium text-gray-800 dark:text-gray-200">
+                Secure Payment via PayPal
+              </p>
+              <a
+                href="https://www.paypal.com/ncp/payment/LPD8LJVAQQKTW"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block w-full bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:from-purple-600 hover:to-purple-800 text-center py-3 rounded-lg font-semibold mb-4"
+              >
+                Pay $4.00 USD via PayPal
+              </a>
               <div className="flex justify-center">
                 <Image
                   src="/paypal-logo.jpg"

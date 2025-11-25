@@ -1,101 +1,176 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
+import type React from "react"
+import { useState } from "react"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { SocialMediaIcons } from "@/components/social-media-icons"
 import { useToast } from "@/hooks/use-toast"
+import Image from "next/image"
+import { HeroBackground } from "@/components/hero-background"
 
-interface PayPalButtonProps {
-  amount: string
-  currency: string
-  showSpinner?: boolean
-  onSuccess?: (details: any) => void
-}
-
-export function PayPalButton({ amount, currency, showSpinner = true, onSuccess }: PayPalButtonProps) {
+export default function ConsultationPage() {
   const { toast } = useToast()
-  const [scriptLoaded, setScriptLoaded] = useState(false)
+  const [selectedAmount, setSelectedAmount] = useState("25.00")
+  const [selectedCurrency] = useState("USD")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  useEffect(() => {
-    setScriptLoaded(true)
-  }, [])
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    birthDate: "",
+    birthTime: "",
+    birthPlace: "",
+    questions: "",
+    paymentScreenshot: null as File | null, // new field
+  })
 
-  // Read client ID from env – REQUIRED for both sandbox and live
-  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
-
-  if (!clientId) {
-    // Fail fast if env is not set, instead of silently using "test" / sandbox
-    if (typeof window !== "undefined") {
-      console.error("Missing NEXT_PUBLIC_PAYPAL_CLIENT_ID for PayPal JS SDK")
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target
+    const fieldMap: { [key: string]: string } = {
+      "first-name": "firstName",
+      "last-name": "lastName",
+      "email": "email",
+      "phone": "phone",
+      "birth-date": "birthDate",
+      "birth-time": "birthTime",
+      "birth-place": "birthPlace",
+      "questions": "questions",
     }
-    return (
-      <div className="py-4 text-center text-red-600">
-        Payment configuration error. Please try again later.
-      </div>
-    )
+
+    const field = fieldMap[id]
+    if (field) {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }))
+    }
   }
 
-  const handleCreateOrder = (data: any, actions: any) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: amount,
-            currency_code: currency,
-          },
-          description: "Astrological Consultation",
-        },
-      ],
-      application_context: {
-        shipping_preference: "NO_SHIPPING",
-      },
-    })
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData((prev) => ({
+        ...prev,
+        paymentScreenshot: e.target.files![0],
+      }))
+    }
   }
 
-  const handleApprove = (data: any, actions: any) => {
-    return actions.order.capture().then((details: any) => {
-      toast({
-        title: "Payment Successful!",
-        description: `Transaction completed by ${details.payer.name.given_name}. Thank you for your payment!`,
-      })
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
 
-      if (onSuccess) {
-        onSuccess(details)
+    try {
+      // Format birth date DD-MM-YYYY
+      const formattedData = {
+        ...formData,
+        birthDate: formData.birthDate
+          ? formData.birthDate.split("-").reverse().join("-")
+          : "",
       }
 
-      // TODO: here you can:
-      // 1. Call your backend to store the order/payment
-      // 2. Trigger email confirmations
-      // 3. Navigate to a thank‑you page
-    })
+      // Create FormData to handle file upload
+      const body = new FormData()
+      Object.entries(formattedData).forEach(([key, value]) => {
+        if (key === "paymentScreenshot" && value) {
+          body.append(key, value)
+        } else {
+          body.append(key, value as string)
+        }
+      })
+
+      const response = await fetch("/api/send-consultation-email", {
+        method: "POST",
+        body,
+      })
+
+      if (response.ok) {
+        toast({
+          title: "Form Submitted Successfully!",
+          description: "Your consultation request has been sent. We will contact you within 72 hours.",
+        })
+
+        // Reset form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          birthDate: "",
+          birthTime: "",
+          birthPlace: "",
+          questions: "",
+          paymentScreenshot: null,
+        })
+      } else {
+        throw new Error("Failed to send email")
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit form. Please try again or contact us directly.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
-  const handleError = (err: any) => {
+  const handlePaymentSuccess = (details: any) => {
     toast({
-      title: "Payment Error",
-      description: "There was an error processing your payment. Please try again.",
-      variant: "destructive",
+      title: "Consultation Booked!",
+      description: "Your consultation has been booked successfully. We will contact you shortly to schedule your session.",
     })
-    console.error("PayPal error:", err)
-  }
-
-  if (!scriptLoaded) {
-    return showSpinner ? <div className="py-4 text-center">Loading payment options...</div> : null
   }
 
   return (
-    <PayPalScriptProvider
-      options={{
-        "client-id": clientId,       // live or sandbox ID comes from env
-        currency: currency,
-        intent: "capture",
-      }}
-    >
-      <PayPalButtons
-        style={{ layout: "vertical", color: "blue", shape: "rect", label: "pay" }}
-        createOrder={handleCreateOrder}
-        onApprove={handleApprove}
-        onError={handleError}
+    <div className="min-h-screen bg-white dark:bg-gray-950">
+      <SiteHeader />
+
+      <HeroBackground
+        title="BOOK A CONSULTATION"
+        description="Schedule a personalized astrological consultation with our expert astrologers"
       />
-    </PayPalScriptProvider>
-  )
-}
+
+      <main className="container px-4 py-12 md:px-6 md:py-16">
+        <div className="mx-auto max-w-6xl">
+          {/* Consultation Form */}
+          <div className="mb-16 rounded-lg overflow-hidden shadow-lg border border-purple-100 dark:border-purple-800">
+            <div className="bg-gradient-to-r from-purple-600 via-purple-500 to-amber-500 p-6 text-white">
+              <h2 className="text-3xl font-bold text-center">Submit Request For Consultation</h2>
+              <p className="text-center mt-2 opacity-90">Please provide your details for the consultation</p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-900 p-8">
+              <div className="max-w-3xl mx-auto">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <label htmlFor="first-name" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        First Name <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        id="first-name"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        placeholder="Enter your first name"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="last-name" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Last Name
+                      </label>
+                      <Input
+                        id="last-name"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        placeholder="Enter your last name"
+                      />
