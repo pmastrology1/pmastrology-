@@ -92,7 +92,7 @@ export default function KundaliReportPage() {
       dataToSend.append("additionalNotes", formData.additionalNotes)
       dataToSend.append("paymentScreenshot", paymentScreenshot)
 
-      const response = await fetch("/api/send-consultation-email", {
+      const response = await fetch("/api/send-kundali-email", {
         method: "POST",
         body: dataToSend,
       })
