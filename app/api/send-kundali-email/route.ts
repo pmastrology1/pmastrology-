@@ -46,7 +46,7 @@ ${questions || "N/A"}
     const mailOptions: any = {
       from: process.env.EMAIL_USER,
       to: process.env.CONTACT_EMAIL,
-      subject: "🪐 New Kundali Request",
+      subject: "New Horoscope Report Request",
       text: message,
     }
 
