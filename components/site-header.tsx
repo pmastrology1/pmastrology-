@@ -1,5 +1,6 @@
 "use client";
 
+import { BRAND_NAME_UPPER } from "@/lib/branding";
 import Link from "next/link";
 import { Sun, Moon, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,7 +47,7 @@ export function SiteHeader() {
             <Sun className="relative h-10 w-10 text-white" />
           </div>
           <span className="text-xl font-cinzel font-bold tracking-wider text-purple-900 dark:text-purple-100 cosmic-title">
-            PM ASTROLOGY
+            {BRAND_NAME_UPPER}
           </span>
         </Link>
 

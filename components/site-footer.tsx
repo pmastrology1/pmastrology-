@@ -1,3 +1,4 @@
+import { BRAND_NAME, BRAND_NAME_UPPER } from "@/lib/branding";
 import Link from "next/link"
 import { Sun } from "lucide-react"
 
@@ -13,7 +14,7 @@ export function SiteFooter() {
                 <Sun className="relative h-8 w-8 text-white" />
               </div>
               <span className="text-lg font-semibold tracking-wide text-purple-900 dark:text-purple-100">
-                PM ASTROLOGY
+                {BRAND_NAME_UPPER}
               </span>
             </Link>
             <p className="mt-4 text-sm text-purple-700 dark:text-purple-300">
@@ -75,7 +76,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="mt-8 border-t border-purple-100 dark:border-purple-900 pt-8 text-center text-sm text-purple-700 dark:text-purple-300">
-          <p>© {new Date().getFullYear()} PM Astrology. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {BRAND_NAME}. All rights reserved.</p>
         </div>
       </div>
     </footer>

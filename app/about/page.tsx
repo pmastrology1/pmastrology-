@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "@/lib/branding";
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { SocialMediaIcons } from "@/components/social-media-icons"
@@ -10,14 +11,14 @@ export default function AboutPage() {
 
       <HeroBackground
         title="ABOUT US"
-        description="Learn more about PM Astrology and our mission to guide you through life's journey"
+        description="Learn more about {BRAND_NAME} and our mission to guide you through life's journey"
       />
 
       <main className="container px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-4xl space-y-8">
           <div className="rounded-lg bg-white dark:bg-gray-900 p-6 shadow-sm border border-purple-100 dark:border-purple-800">
             <p className="mb-6 text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-              PM Astrology is recognized as the premier astrology consulting service provider in India. We are a mobile
+              {BRAND_NAME} is recognized as the premier astrology consulting service provider in India. We are a mobile
               marketplace for astrology and its related advice services. We help customers hire trusted esoteric
               professionals for all their astrology needs.
             </p>

@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "@/lib/branding";
 import type React from "react"
 import "@/app/globals.css"
 import { Playfair_Display, Inter, Cinzel } from "next/font/google"
@@ -25,7 +26,7 @@ const cinzel = Cinzel({
 })
 
 export const metadata = {
-  title: "PM Astrology - Discover Your Cosmic Path",
+  title: "BRAND_NAME - Discover Your Cosmic Path",
   description: "Expert astrological guidance to illuminate your journey and reveal the possibilities that await you.",
     generator: 'v0.dev'
 }
