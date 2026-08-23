@@ -26,7 +26,7 @@ const cinzel = Cinzel({
 })
 
 export const metadata = {
-  title: "BRAND_NAME - Discover Your Cosmic Path",
+  title: `${BRAND_NAME} - Discover Your Cosmic Path`,
   description: "Expert astrological guidance to illuminate your journey and reveal the possibilities that await you.",
     generator: 'v0.dev'
 }

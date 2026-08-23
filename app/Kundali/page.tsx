@@ -279,7 +279,7 @@ export default function KundaliReportPage() {
             Get Your Horoscope & Detailed Life Report
           </p>
           <p className="mb-8 text-gray-700 dark:text-gray-300">
-            Receive your computer-generated Kundali chart and a detailed PDF report of 150 pages covering all key aspects of life.
+            Receive your computer-generated Kundali chart and a detailed PDF report of more than 100 pages covering all key aspects of life.
           </p>
 
           <div className="mt-12 grid gap-12 md:grid-cols-2">
@@ -294,7 +294,7 @@ export default function KundaliReportPage() {
               </div>
               <p className="text-center mb-4 text-gray-700 dark:text-gray-300 font-medium">
                 Detailed Kundali Report:{" "}
-                <span className="text-purple-700 dark:text-purple-300 font-bold">INR 200</span>
+                <span className="text-purple-700 dark:text-purple-300 font-bold">INR 300</span>
               </p>
               <div className="flex justify-center mb-4">
                 <Image
@@ -328,7 +328,7 @@ export default function KundaliReportPage() {
                 rel="noopener noreferrer"
                 className="inline-block w-full bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:from-purple-600 hover:to-purple-800 text-center py-3 rounded-lg font-semibold mb-4"
               >
-                Pay $4.00 USD via PayPal
+                Pay $6.00 USD via PayPal
               </a>
               <div className="flex justify-center">
                 <Image
