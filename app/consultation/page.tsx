@@ -235,7 +235,7 @@ export default function ConsultationPage() {
 
               <p className="mt-6 text-center font-medium">
                 30-45 Minutes Phone Consultation:{" "}
-                <span className="font-bold text-purple-700">INR 1,500</span>
+                <span className="font-bold text-purple-700">INR 3900</span>
               </p>
 
               <div className="flex justify-center my-4">
@@ -269,12 +269,12 @@ export default function ConsultationPage() {
                 value={selectedAmount}
                 onChange={(e) => setSelectedAmount(e.target.value)}
               >
-                <option value="25.00">30-45 Minutes Consultation $25.00 USD</option>
+                <option value="41.00">30-45 Minutes Consultation $41.00 USD</option>
               </select>
 
               {/* NEW PAYPAL BUTTON WITH LINK */}
               <a
-                href="https://www.paypal.com/ncp/payment/NXE6UYDNTW3W2"
+                href="https://www.paypal.com/ncp/payment/R56KK847HPJEL"
                 target="_blank"
                 rel="noopener noreferrer"
               >
