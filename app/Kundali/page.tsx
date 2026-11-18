@@ -134,7 +134,7 @@ export default function KundaliReportPage() {
 
       <HeroBackground
         title="ORDER YOUR KUNDALI & DETAILED ASTRO REPORT"
-        description="Get your personalized Computer generated Kundali / Horoscope chart with complete detailed dasha sequence and all yogas just for 200 rupees"
+        description="Get your personalized Computer generated Kundali / Horoscope chart with complete detailed dasha sequence and all yogas just for 300 rupees"
       />
 
       <main className="container px-4 py-12 md:px-6 md:py-16">
